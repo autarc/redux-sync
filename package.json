@@ -1,6 +1,6 @@
 {
   "name": "redux-sync",
-  "description": "",
+  "description": "A redux store enhancer which allows to mirror one store as a part of another",
   "version": "0.3.0",
   "author": "Stefan Dühring | Autarc <autarc@gmail.com>",
   "bugs": {
