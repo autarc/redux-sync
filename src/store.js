@@ -6,8 +6,9 @@
  * TODO: checkout compatibity after upgrading redux, https://github.com/reactjs/redux/pull/1702
  */
 
-import { DiffPatcher } from 'jsondiffpatch/src/diffpatcher'
+import stringify from 'json-stringify-safe'
 import objectPath from 'object-path'
+import { DiffPatcher } from 'jsondiffpatch/src/diffpatcher'
 
 const diffpatcher = new DiffPatcher()
 
@@ -63,12 +64,10 @@ export default function syncStore (customOptions) {
         const patch = diffpatcher.diff(stateBefore, stateAfter)
         sendMessage(options, window.parent, action, patch)
       } else {
-
         const patch = diffpatcher.diff(
           objectPath.get(stateBefore, options.root),
           objectPath.get(stateAfter, options.root)
         )
-
         if (patch) {
           const connection = connections[options.id]
           sendMessage(options, connection, action, patch)
@@ -97,7 +96,7 @@ export default function syncStore (customOptions) {
     store.replaceReducer((state = creationState, action) => {
 
       if (action.type === SYNC) {
-         // TODO: create a new immutable type
+        // TODO: handle/merge complex types of 'immutables'
         state = {...state}
         diffpatcher.patch(objectPath.get(state, options.root), action.patch)
         return state
@@ -122,7 +121,7 @@ export default function syncStore (customOptions) {
 * @return {[type]}               [description]
 */
 function sendMessage (options, scope, action, patch) {
-  scope.postMessage('redux-sync:' + JSON.stringify({
+  scope.postMessage('redux-sync:' + stringify({
     id: options.id,
     trigger: action,
     patch
