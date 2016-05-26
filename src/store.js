@@ -97,7 +97,8 @@ export default function syncStore (customOptions) {
 
       if (action.type === SYNC) {
         // TODO: handle/merge complex types of 'immutables'
-        state = {...state}
+        // TODO: use selective approach for decoupling references (e.g. based on {...state})
+        state = JSON.parse(stringify(state))
         diffpatcher.patch(objectPath.get(state, options.root), action.patch)
         return state
       }
