@@ -1,3 +1,9 @@
+## [v0.4.1]
+> May 28, 2016
+
+- check if message channel exist
+
+
 ## [v0.4.0]
 > May 26, 2016
 
