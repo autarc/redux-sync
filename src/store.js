@@ -70,7 +70,7 @@ export default function syncStore (customOptions) {
         )
         if (patch) {
           const connection = connections[options.id]
-          sendMessage(options, connection, action, patch)
+          connection && sendMessage(options, connection, action, patch)
         }
       }
 
@@ -122,7 +122,7 @@ export default function syncStore (customOptions) {
 * @return {[type]}               [description]
 */
 function sendMessage (options, scope, action, patch) {
-  scope.postMessage('redux-sync:' + stringify({
+  scope && scope.postMessage('redux-sync:' + stringify({
     id: options.id,
     trigger: action,
     patch
